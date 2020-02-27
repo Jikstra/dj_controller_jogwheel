@@ -17,26 +17,18 @@ enum Direction { CW, CCW, UNSURE, INVALID, STAY };
 int state = 0b11;
 int state_index = 0;
 
-void p(char *fmt, ... ){
-  char buf[128]; // resulting string limited to 128 chars
-  va_list args;
-  va_start (args, fmt );
-  vsnprintf(buf, 128, fmt, args);
-  va_end (args);
-  Serial.println(buf);
-}
-
 char* state_to_string(int state) {
-    if      (state == 0b00) { return "0b00"; }
-    else if (state == 0b01) { return "0b01"; }
-    else if (state == 0b10) { return "0b10"; }
-    else if (state == 0b11) { return "0b11"; }
-    else                    { return "0bERR"; }
+    if      (state == 0b00) { return (char*) "0b00"; }
+    else if (state == 0b01) { return (char*) "0b01"; }
+    else if (state == 0b10) { return (char*) "0b10"; }
+    else if (state == 0b11) { return (char*) "0b11"; }
+    else                    { return (char*) "0bERR"; }
 }
 
 int get_pin_state() {
     int left = digitalRead(PIN_PHOTO_CCW);
     int right = digitalRead(PIN_PHOTO_CW);
+
     int pin_state = left << 1 | right << 0;
     return pin_state;
 }
@@ -59,14 +51,14 @@ if (*state == pin_state) return Direction::STAY;
     //p("%s [%i %i %i] %s", state_to_string(*state), *state_index, next_state_index, prev_state_index, state_to_string(pin_state));
 
     if (STATE_FOLLOWUP[next_state_index] == pin_state) {
-        p("%s --> %s", state_to_string(state), state_to_string(pin_state));
+        p("%s --> %s", state_to_string(*state), state_to_string(pin_state));
         *state_index = next_state_index;
         *state = STATE_FOLLOWUP[next_state_index];
         
         if (*state == 0b00 || *state == 0b11) return Direction::CW;
 
     } else if (STATE_FOLLOWUP[prev_state_index] == pin_state) {
-        p("%s <-- %s", state_to_string(pin_state), state_to_string(state));
+        p("%s <-- %s", state_to_string(pin_state), state_to_string(*state));
         *state_index = prev_state_index;
         *state = STATE_FOLLOWUP[prev_state_index];
         if (*state == 0b00 || *state == 0b11) return Direction::CCW;
@@ -85,8 +77,7 @@ void setup()
 
 unsigned int counter = 0;
 void loop()
-{
-    
+{ 
     int pin_state = get_pin_state();
     Direction direction = process_pin_state(pin_state, &state, &state_index);
     if (direction == Direction::CW) {
