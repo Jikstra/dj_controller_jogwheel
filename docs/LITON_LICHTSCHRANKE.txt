@@ -1,0 +1,9 @@
+# How to connect
+
+A (Anode): 3.5v
+K (Kathode): 0v
+E: 3.5V
+O: Ground
+A/D: E
+
+HINT: There probably should be a restistor between anode and 3.5v
