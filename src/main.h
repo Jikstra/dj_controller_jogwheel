@@ -4,3 +4,4 @@
 
 #include "debug.h"
 #include "common.h"
+#include "jogwheel.h"

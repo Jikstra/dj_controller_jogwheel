@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __DEBUG_H_INCLUDED__
+#define __DEBUG_H_INCLUDED__
 
 //#define DEBUG // Uncomment to enable debugging
  
@@ -8,4 +9,6 @@
 #else 
   #define IFDEBUG(x)
   #define IFNDEBUG(x) x
+#endif
+
 #endif

@@ -3,35 +3,9 @@
 const int PIN_PHOTO_CCW = 2;
 const int PIN_PHOTO_CW = 3;
 
-int STATE_FOLLOWUP[] = {
-    0b11,
-    0b01,
-    0b00,
-    0b10,
-};
-
-int COUNT_STATE_FOLLOWUP = sizeof(STATE_FOLLOWUP) / sizeof(int); // 8
-
-enum Direction { CW, CCW, UNSURE, INVALID, STAY };
 
 int state = 0b11;
 int state_index = 0;
-
-char* state_to_string(int state) {
-    if      (state == 0b00) { return (char*) "0b00"; }
-    else if (state == 0b01) { return (char*) "0b01"; }
-    else if (state == 0b10) { return (char*) "0b10"; }
-    else if (state == 0b11) { return (char*) "0b11"; }
-    else                    { return (char*) "0bERR"; }
-}
-
-int get_pin_state() {
-    int left = digitalRead(PIN_PHOTO_CCW);
-    int right = digitalRead(PIN_PHOTO_CW);
-
-    int pin_state = left << 1 | right << 0;
-    return pin_state;
-}
 
 int mod (int a, int b)
 {
@@ -78,7 +52,7 @@ void setup()
 unsigned int counter = 0;
 void loop()
 { 
-    int pin_state = get_pin_state();
+    int pin_state = get_pin_state(PIN_PHOTO_CCW, PIN_PHOTO_CW);
     Direction direction = process_pin_state(pin_state, &state, &state_index);
     if (direction == Direction::CW) {
         counter++;
