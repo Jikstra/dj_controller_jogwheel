@@ -5,3 +5,4 @@
 #include "debug.h"
 #include "common.h"
 #include "jogwheel.h"
+#include "midi.h"

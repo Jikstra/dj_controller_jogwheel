@@ -5,5 +5,6 @@
 #include "debug.h"
 
 void p(char *fmt, ... );
+int mod (int a, int b);
 
 #endif

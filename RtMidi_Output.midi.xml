@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<MixxxControllerPreset schemaVersion="1" mixxxVersion="">
+    <info/>
+    <controller id="RtMidi">
+        <scriptfiles>
+            <file filename="rtmidi.js" functionprefix="MyController"/>
+        </scriptfiles>
+        <controls>
+            <control>    <!--    Pitch slider    -->
+                <group>[Channel1]</group>
+                <key>MyController.wheelTurn</key>
+                <status>0xE0</status>
+                <midino>0x01</midino>
+                <options>
+                    <Script-Binding/>
+                </options>
+            </control>
+        </controls>
+        <outputs/>
+    </controller>
+</MixxxControllerPreset>
