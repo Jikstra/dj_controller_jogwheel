@@ -28,6 +28,20 @@ char* state_to_string(int state);
 
 int get_pin_state(int pin_ccw, int pin_cw);
 
-Direction process_pin_state(int pin_state, int* state, int* state_index);
+Direction process_pin_state(int pin_state, int* state, int* state_index, int* state_counter);
+char* direction_to_string(Direction direction);
 
+
+class Jogwheel {       // The class
+    public:             // Access specifier
+        int pin_ccw; 
+        int pin_cw; 
+        int state = 0b11;
+        int state_index = 0;
+        int state_counter = 0;
+
+        Jogwheel(int pin_ccw, int pin_cw);
+        Direction process();
+
+};
 #endif

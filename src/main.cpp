@@ -5,8 +5,6 @@ const int PIN_PHOTO_CW = 3;
 const int PIN_BUTTON_CUE = 4;
 
 
-int state = 0b11;
-int state_index = 0;
 
 
 void setup()
@@ -15,16 +13,27 @@ void setup()
 
     pinMode(PIN_BUTTON_CUE, INPUT_PULLUP);
 }
-    
+
+
+Jogwheel jogwheel(PIN_PHOTO_CCW, PIN_PHOTO_CW);
+IFDEBUG(int debug_jogwheel_counter = 0);
 void process_jogwheel() {
-    int pin_state = get_pin_state(PIN_PHOTO_CCW, PIN_PHOTO_CW);
-    Direction direction = process_pin_state(pin_state, &state, &state_index);
+    Direction direction = jogwheel.process();
 
     if (direction <= 0) return; 
 
-    IFDEBUG(p("%s %i", (direction == Direction::CW ? "CW" : "CCW")));
+    IFDEBUG(
+        p("[JOGWHEEL] DIRECTION: %s", direction_to_string(direction));
+        debug_jogwheel_counter = mod(
+            direction == Direction::CW ?
+                debug_jogwheel_counter + 1 :
+                debug_jogwheel_counter - 1,
+            120
+        );
+        p("[JOGWHEEL] COUNTER: %i", debug_jogwheel_counter)
+    );
 
-    IFNDEBUG(writeMIDI(MIDI_PITCH, 0, 1, direction == Direction::CW ? 1 : 0));
+    IFNDEBUG(sendMIDI(MIDI_PITCH, 0, 1, direction == Direction::CW ? 1 : 0));
 }
 
 int button_state = 0;
@@ -35,8 +44,9 @@ void process_button_cue() {
 
     IFDEBUG(p("BUTTON CUE"));
 
-    IFNDEBUG(writeMIDI(MIDI_NOTE_ON, 0, 2, 0));
+    IFNDEBUG(sendMIDI(MIDI_NOTE_ON, 0, 2, 0));
 }
+
 
 void loop() {
     process_jogwheel();
