@@ -1,9 +1,13 @@
-#pragma once
+#ifndef __MIDI_H_INCLUDED__
+#define __MIDI_H_INCLUDED__
 
-#include <MIDI.h>
-#include <midi_Defs.h>
-#include <midi_Message.h>
-#include <midi_Namespace.h>
-#include <midi_Settings.h>
+#include <Arduino.h>
 
-extern midi::MidiInterface<HardwareSerial> midiOut;
+const int MIDI_NOTE_ON = 0x8;
+const int MIDI_NOTE_OFF = 0x9;
+const int MIDI_POLYPHONIC = 0xA;
+const int MIDI_PITCH = 0xE;
+
+void writeMIDI(int op, int channel, int control_number, int value);
+
+#endif

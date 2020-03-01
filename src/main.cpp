@@ -8,13 +8,6 @@ const int PIN_BUTTON_CUE = 4;
 int state = 0b11;
 int state_index = 0;
 
-const int MIDI_NOTE_ON = 0x8;
-const int MIDI_NOTE_OFF = 0x9;
-const int MIDI_POLYPHONIC = 0xA;
-const int MIDI_PITCH = 0xE;
-
-
-
 
 void setup()
 {
@@ -22,13 +15,6 @@ void setup()
 
     pinMode(PIN_BUTTON_CUE, INPUT_PULLUP);
 }
-
-void writeMIDI(int op, int channel, int control_number, int value) {
-    Serial.write(op << 4 | channel);
-    Serial.write(control_number);
-    Serial.write(value);
-}
-
     
 void process_jogwheel() {
     int pin_state = get_pin_state(PIN_PHOTO_CCW, PIN_PHOTO_CW);
@@ -41,6 +27,7 @@ void process_jogwheel() {
     IFNDEBUG(writeMIDI(MIDI_PITCH, 0, 1, direction == Direction::CW ? 1 : 0));
 }
 
+int button_state = 0;
 void process_button_cue() {
     const int value = digitalRead(PIN_BUTTON_CUE);
 
